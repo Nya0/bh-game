@@ -1,1 +1,1 @@
-# bh-game
+`gcc -shared -fPIC -o truelib.so truelib.c -ldl && LD_PRELOAD=./hack.so ./Dungeon`
