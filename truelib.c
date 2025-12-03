@@ -91,6 +91,13 @@ void init() {
     //     0xc7, 0x40, 0x20, 0xFF, 0x00, 0x00, 0x00 // MOV [RAX + 0x20],0x64
     // };
 
+
+    // patch x to 224
+    // patch y to 400
+
+    // give attack of 500 using 
+
+    // could also instantly jump to win instructions
     
     float val = 400.0f;
     patch_bytes(FLOAT_DAT, &val, sizeof(val));
