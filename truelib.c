@@ -26,7 +26,7 @@ void* get_base() {
 int make_writable(void *addr, size_t len) {
     void *page = (void *)((uintptr_t)addr & ~(page_size - 1));
     if (mprotect(page, page_size, PROT_READ | PROT_WRITE | PROT_EXEC) != 0) {
-        perror("[wow] mprotect failed");
+        perror("[TRUEE] mprotect failed");
         return -1;
     }
     return 0;
@@ -44,7 +44,7 @@ int hook_function(void *from, void *to) {
     memcpy(&jump[2], &to, 8);
     memcpy(from, jump, sizeof(jump));
     
-    fprintf(stderr, "[wow] hooked %p -> %p\n", from, to);
+    fprintf(stderr, "[TRUEE] hooked %p -> %p\n", from, to);
     return 0;
 }
 
@@ -54,20 +54,16 @@ int patch_bytes(uintptr_t offset, void *data, size_t len) {
         return -1;
     }
     memcpy(addr, data, len);
-    fprintf(stderr, "[wow] patched %zu bytes at %p\n", len, addr);
+    fprintf(stderr, "[TRUEE] patched %zu bytes at %p\n", len, addr);
     return 0;
 }
 
 void hexdump(void *addr, size_t len) {
     unsigned char *p = addr;
-    fprintf(stderr, "[wow] %p: ", addr);
+    fprintf(stderr, "[TRUEE] %p: ", addr);
     for (size_t i = 0; i < len; i++)
         fprintf(stderr, "%02x ", p[i]);
     fprintf(stderr, "\n");
-}
-
-void MY_function() {
-    fprintf(stderr, "meow");
 }
 
 __attribute__((constructor))
@@ -76,8 +72,9 @@ void init() {
     base = get_base();
 
 
-    fprintf(stderr, "[wow] base: %p\n", base);
-
+    fprintf(stderr, "[TRUEE] base: %p\n", base);
+    // addr = base + offset
+    // some funcs require addr some just offset because yeah
 
     
     // patch_bytes(FLOAT_DAT, &val, sizeof(val));
@@ -97,7 +94,7 @@ void init() {
 
 __attribute__((destructor))
 void cleanup(void) {
-    fprintf(stderr, "\n[wow] cleanup\n");
+    fprintf(stderr, "\n[TRUEE] cleanup\n");
 }
 
 
