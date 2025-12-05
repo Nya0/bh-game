@@ -7,10 +7,6 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-#define OFFSET_HEALTH
-#define POS_FUNC 0x0000192f
-#define FLOAT_DAT 0x00003234
-
 static void *base = NULL; 
 static size_t page_size = 0;
 
@@ -74,11 +70,6 @@ void MY_function() {
     fprintf(stderr, "meow");
 }
 
-
-// void set_pos_hook(float x, float y, void* player_struct) {
-//     ((void (*)(float, float, void*))(base + FUNC))(100.0f, 100.0f, player_struct);
-// }
-
 __attribute__((constructor))
 void init() {
     page_size = sysconf(_SC_PAGESIZE);
@@ -86,24 +77,10 @@ void init() {
 
 
     fprintf(stderr, "[wow] base: %p\n", base);
-    // hook_function(base + POS_FUNC, set_pos_hook);
-    // unsigned char ins[] = {
-    //     0xc7, 0x40, 0x20, 0xFF, 0x00, 0x00, 0x00 // MOV [RAX + 0x20],0x64
-    // };
 
 
-    // patch x to 224
-    // patch y to 400
-
-    // give attack of 500 using 
-
-    // could also instantly jump to win instructions
     
-    float val = 400.0f;
-    patch_bytes(FLOAT_DAT, &val, sizeof(val));
-    // ((void (*)(void))(base + POS_FUNC))();
-
-
+    // patch_bytes(FLOAT_DAT, &val, sizeof(val));
 }
 
 // ((void (*)(void))(base + FUNC_ADDRESS))();
@@ -112,13 +89,6 @@ void init() {
 
 // mov eax, 224 = B8 E0 00 00 00
 // mov eax, 400 = 90 01 00 00 00
-
-// unsigned char mov_eax[] = {0xB8, 0xE0};
-// do enough to cover the old ins
-
-// patch_bytes(offset1, nops, sizeof(nops)); 
-// patch_bytes(offset2, nops, sizeof(nops));
-// patch_bytes(offse, mov_eax_224, 5);
 
 // unsigned char patch[] = {
 //     0xB8, 0x64, 0x00, 0x00, 0x00,  // MOV EAX, 100 5b
@@ -130,11 +100,13 @@ void cleanup(void) {
     fprintf(stderr, "\n[wow] cleanup\n");
 }
 
-static int (*original_rand)(void) = NULL;
 
-int rand(void) {
-    if (!original_rand) {
-        original_rand = dlsym(RTLD_NEXT, "rand");
-    }
-    return RAND_MAX;
-}
+
+// static int (*original_rand)(void) = NULL;
+
+// int rand(void) {
+//     if (!original_rand) {
+//         original_rand = dlsym(RTLD_NEXT, "rand");
+//     }
+//     return RAND_MAX;
+// }
